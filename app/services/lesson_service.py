@@ -9,7 +9,8 @@ async def get_all_lessons():
 
 # Get a lesson by title (instead of ID)
 async def get_lesson(lesson_title: str):
-    lesson = await database["lessons"].find_one({"title": lesson_title})
+    lesson = await database["lessons"].find_one({"lessonTitle": lesson_title})
+    print(lesson)
     if lesson:
         return LessonResponse(id=str(lesson["_id"]), **lesson)
     return None
@@ -19,6 +20,15 @@ async def create_lesson(lesson: LessonCreate):
     lesson_data = lesson.dict()
     result = await database["lessons"].insert_one(lesson_data)
     return LessonResponse(id=str(result.inserted_id), **lesson_data)
+
+# Create multiple lessons
+async def create_lessons_bulk(lessons: list[LessonCreate]):
+    lessons_data = [lesson.dict() for lesson in lessons]
+    result = await database["lessons"].insert_many(lessons_data)
+    return [
+        LessonResponse(id=str(inserted_id), **lesson)
+        for inserted_id, lesson in zip(result.inserted_ids, lessons_data)
+    ]
 
 # Update a lesson by title (instead of ID)
 async def update_lesson(lesson_title: str, lesson: LessonCreate):

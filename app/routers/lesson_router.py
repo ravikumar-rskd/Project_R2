@@ -5,7 +5,7 @@ from app.services import lesson_service
 router = APIRouter()
 
 # Get all lessons
-@router.get("/", response_model=list[LessonResponse])
+@router.get("/", response_model=list[LessonResponse]) #use "ip_address/lessons/" as base api endpoint for all http methods
 async def read_lessons():
     return await lesson_service.get_all_lessons()
 
@@ -21,6 +21,11 @@ async def read_lesson(lesson_title: str):
 @router.post("/", response_model=LessonResponse, status_code=status.HTTP_201_CREATED)
 async def create_lesson(lesson: LessonCreate):
     return await lesson_service.create_lesson(lesson)
+
+    # Create multiple lessons
+@router.post("/bulk", response_model=list[LessonResponse], status_code=status.HTTP_201_CREATED)
+async def create_lessons_bulk(lessons: list[LessonCreate]):
+    return await lesson_service.create_lessons_bulk(lessons)
 
 # Update a lesson by title (modified to use title instead of ID)
 @router.put("/{lesson_title}", response_model=LessonResponse)
