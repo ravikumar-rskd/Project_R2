@@ -1,7 +1,8 @@
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from app.schemas import CourseSchema
+from app.schemas.course_schema import CourseSchema
 from bson import ObjectId
 from typing import List
+from app.db.mongodb import courses_collection
 
 # Fetch all courses
 async def get_all_courses() -> List[CourseSchema]:

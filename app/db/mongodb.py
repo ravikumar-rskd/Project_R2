@@ -5,5 +5,5 @@ client = AsyncIOMotorClient(settings.MONGODB_URL)
 database = client[settings.DATABASE_NAME]
 
 # Collection references
-courses_collection = database.courses
-problems_collection = database.problems
+courses_collection = database[settings.COURSES_COLLECTION]  # Use collection name from .env
+# problems_collection = database.problems

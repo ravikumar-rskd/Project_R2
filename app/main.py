@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import lesson_router
+from app.routers import course_router
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -16,6 +16,6 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-app.include_router(lesson_router.router, prefix="/lessons", tags=["Lessons"])
+app.include_router(course_router.router, tags=["Lessons"])
 
 # Run the app with: uvicorn app.main:app --reload
